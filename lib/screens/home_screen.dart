@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_formulario/screens/screens.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_formulario/router/app_router.dart';
+import 'package:flutter_formulario/services/services.dart';
 import 'package:flutter_formulario/widgets/widgests.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -7,9 +10,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productsService = Provider.of<ProductsService>(context);
+
+    if (productsService.isLoading) return LoadingScreen();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Productos'),
       ),
       body: ListView.builder(
         itemCount: 10,
