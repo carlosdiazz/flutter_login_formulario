@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_formulario/models/models.dart';
 import 'package:flutter_formulario/screens/screens.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_formulario/router/app_router.dart';
@@ -34,8 +35,9 @@ class HomeScreen extends StatelessWidget {
           FloatingActionButton(
             heroTag: 'btn1',
             onPressed: () {
-              Navigator.pushReplacementNamed(
-                  context, AppRoute.loginScreenRoute);
+              productsService.selectedProduct =
+                  Product(available: true, name: "", price: 0);
+              Navigator.pushNamed(context, AppRoute.productScreenRoute);
             },
             child: const Icon(Icons.add),
           ),

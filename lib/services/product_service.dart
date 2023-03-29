@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_formulario/models/models.dart';
@@ -8,7 +9,10 @@ class ProductsService extends ChangeNotifier {
   final String _baseUrl = 'flutter-varios-69aeb-default-rtdb.firebaseio.com';
   final List<Product> products = [];
   bool isLoading = true;
+  bool isSaving = false;
   late Product selectedProduct;
+
+  File? newPictureFile;
 
   //TODO: hacer el fetch de producto
   ProductsService() {
@@ -31,5 +35,46 @@ class ProductsService extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
     return products;
+  }
+
+  Future saveOrCreateProduct(Product product) async {
+    isSaving = true;
+    notifyListeners();
+
+    if (product.id == null) {
+      await createProduct(product);
+    } else {
+      //se actualiza
+      await updateProduct(product);
+    }
+
+    isSaving = false;
+    notifyListeners();
+  }
+
+  Future<String> updateProduct(Product product) async {
+    final url = Uri.https(_baseUrl, 'products/${product.id}.json');
+    final resp = await http.put(url, body: product.toRawJson());
+    //final decodedData = resp.body;
+
+    final index = products.indexWhere((element) => element.id == product.id);
+    products[index] = product;
+
+    return product.id!;
+  }
+
+  Future<String> createProduct(Product product) async {
+    final url = Uri.https(_baseUrl, 'products.json');
+    final resp = await http.post(url, body: product.toRawJson());
+    final decodedData = json.decode(resp.body);
+    product.id = decodedData['name'];
+    products.add(product);
+    return product.id!;
+  }
+
+  void updateSelectProductImage(String path) {
+    selectedProduct.picture = path;
+    newPictureFile = File.fromUri(Uri(path: path));
+    notifyListeners();
   }
 }
