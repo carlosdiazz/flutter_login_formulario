@@ -69,7 +69,7 @@ class _ProductScreenBody extends StatelessWidget {
                         if (photo == null) return;
 
                         print('Tenemos imagen ${photo.path}');
-                        //productService.updateSelectProductImage(photo.path);
+                        productService.updateSelectProductImage(photo.path);
 // Pick a video.
                       },
                       icon: const Icon(

@@ -77,4 +77,11 @@ class ProductsService extends ChangeNotifier {
     newPictureFile = File.fromUri(Uri(path: path));
     notifyListeners();
   }
+
+  Future<String?> uploadImage() async {
+    if (newPictureFile == null) return null;
+    isSaving = true;
+    notifyListeners();
+    final url = Uri.parse(uri)
+  }
 }
