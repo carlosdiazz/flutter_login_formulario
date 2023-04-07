@@ -12,12 +12,21 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsService = Provider.of<ProductsService>(context);
-
-    if (productsService.isLoading) return LoadingScreen();
+    final authService = Provider.of<AuthService>(context, listen: false);
+    if (productsService.isLoading) return const LoadingScreen();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Productos'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                authService.logout();
+                Navigator.pushReplacementNamed(
+                    context, AppRoute.loginScreenRoute);
+              },
+              icon: Icon(Icons.login_outlined))
+        ],
       ),
       body: ListView.builder(
         itemCount: productsService.products.length,

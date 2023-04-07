@@ -14,6 +14,9 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => ProductsService(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AuthService(),
         )
       ],
       child: const MyApp(),
@@ -29,8 +32,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoute.homeScreenRoute,
+      initialRoute: AppRoute.checkingScreen,
       routes: AppRoute.routes,
+      scaffoldMessengerKey: NotificationsService.messengerKey,
       theme: ThemeData.light().copyWith(
           scaffoldBackgroundColor: Colors.grey[300],
           appBarTheme:

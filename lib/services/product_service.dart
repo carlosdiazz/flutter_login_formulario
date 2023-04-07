@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_formulario/models/models.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ProductsService extends ChangeNotifier {
@@ -11,6 +12,7 @@ class ProductsService extends ChangeNotifier {
   bool isLoading = true;
   bool isSaving = false;
   late Product selectedProduct;
+  final storage = FlutterSecureStorage();
 
   File? newPictureFile;
 
@@ -22,7 +24,8 @@ class ProductsService extends ChangeNotifier {
   Future<List<Product>> loadProducts() async {
     isLoading = true;
     notifyListeners();
-    final url = Uri.https(_baseUrl, 'products.json');
+    final url = Uri.https(_baseUrl, 'products.json',
+        {'auth': await storage.read(key: 'TOKEN') ?? ''});
     final resp = await http.get(url);
     final Map<String, dynamic> productsMap = json.decode(resp.body);
 

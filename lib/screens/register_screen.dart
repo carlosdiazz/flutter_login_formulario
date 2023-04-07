@@ -6,8 +6,8 @@ import 'package:flutter_formulario/ui/input_decorations.dart';
 import 'package:flutter_formulario/widgets/widgests.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class RegsiterScreen extends StatelessWidget {
+  const RegsiterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class LoginScreen extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  'Login',
+                  'Crear Cuenta',
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 const SizedBox(
@@ -42,9 +42,9 @@ class LoginScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () => Navigator.pushReplacementNamed(
-                  context, AppRoute.registerScreenRoute),
+                  context, AppRoute.loginScreenRoute),
               child: Text(
-                'Crear una nueva cuenta',
+                'Ya tienes una cuenta?',
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: Colors.indigo),
               ),
@@ -121,8 +121,8 @@ class _LoginForm extends StatelessWidget {
                         final authService = Provider.of<AuthService>(context,
                             listen: false); //Quitar teclado
 
-                        final String? errorMessage = await authService.login(
-                            loginForm.email, loginForm.password);
+                        final String? errorMessage = await authService
+                            .createUser(loginForm.email, loginForm.password);
 
                         if (errorMessage == null) {
                           Navigator.pushReplacementNamed(
